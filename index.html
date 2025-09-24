@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="一个以开源灵感打造的个人酷炫名片式网站。" />
+  <title>我的超炫个人主页</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="film-grain" aria-hidden="true"></div>
+  <main class="hero" role="main">
+    <article class="hero__card" aria-label="个人介绍">
+      <div class="hero__media" role="img" aria-label="替换成你的照片或作品">
+        <img src="assets/syt.jpg" alt="请替换成你的专属图片" />
+      </div>
+      <div class="hero__copy">
+        <h1>SYT</h1>
+        <p>
+          吉隆坡的天气总是翻云又覆雨
+        </p>
+        <p class="hero__subline">
+           Malaysia
+        </p>
+      </div>
+    </article>
+    <div class="hero__hint" aria-hidden="true">
+      <span>SCROLL</span>
+      <span class="hero__hint-line"></span>
+    </div>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
