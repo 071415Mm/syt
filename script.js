@@ -200,7 +200,11 @@
       }
       const playPromise = backgroundAudio.play();
       if (playPromise && typeof playPromise.then === "function") {
-        playPromise.catch(() => {});
+        playPromise
+          .then(setButtonState)
+          .catch((error) => {
+            console.warn("Background audio autoplay was blocked", error);
+          });
       }
     };
 
@@ -255,11 +259,17 @@
 
     backgroundAudio.addEventListener("play", setButtonState);
     backgroundAudio.addEventListener("pause", setButtonState);
+    backgroundAudio.addEventListener("error", () => {
+      console.error("Background audio failed to load", backgroundAudio.error);
+    });
 
     attemptAudioPlay();
     setButtonState();
   }
 })();
+
+
+
 
 
 
