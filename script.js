@@ -182,25 +182,39 @@
 
   const backgroundAudio = document.getElementById("background-audio");
   if (backgroundAudio) {
+    let isUnlocked = false;
+
     const attemptAudioPlay = () => {
+      if (!isUnlocked) {
+        backgroundAudio.muted = true;
+      }
       const playPromise = backgroundAudio.play();
       if (playPromise && typeof playPromise.then === "function") {
-        playPromise.catch(() => {});
+        playPromise
+          .then(() => {
+            setTimeout(() => {
+              if (!isUnlocked) {
+                backgroundAudio.muted = false;
+              }
+            }, 150);
+          })
+          .catch(() => {});
       }
     };
 
     attemptAudioPlay();
 
     const unlockAudio = () => {
-      attemptAudioPlay();
-      if (!backgroundAudio.paused) {
-        window.removeEventListener("pointerdown", unlockAudio);
-        window.removeEventListener("keydown", unlockAudio);
+      isUnlocked = true;
+      backgroundAudio.muted = false;
+      backgroundAudio.volume = 1;
+      if (backgroundAudio.paused) {
+        backgroundAudio.play().catch(() => {});
       }
     };
 
-    window.addEventListener("pointerdown", unlockAudio);
-    window.addEventListener("keydown", unlockAudio);
+    window.addEventListener("pointerdown", unlockAudio, { once: true });
+    window.addEventListener("keydown", unlockAudio, { once: true });
 
     document.addEventListener("visibilitychange", () => {
       if (!document.hidden && backgroundAudio.paused) {
@@ -209,5 +223,6 @@
     });
   }
 })();
+
 
 
