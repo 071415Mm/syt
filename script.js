@@ -181,8 +181,18 @@
   }
 
   const backgroundAudio = document.getElementById("background-audio");
+  const audioToggleButton = document.querySelector("[data-audio-toggle]");
   if (backgroundAudio) {
     let isUnlocked = false;
+
+    const setButtonState = () => {
+      if (!audioToggleButton) {
+        return;
+      }
+      const isPlaying = !backgroundAudio.paused && !backgroundAudio.ended;
+      audioToggleButton.setAttribute("aria-pressed", isPlaying ? "true" : "false");
+      audioToggleButton.textContent = isPlaying ? "暂停背景音乐" : "播放背景音乐";
+    };
 
     const attemptAudioPlay = () => {
       if (!isUnlocked) {
@@ -190,39 +200,67 @@
       }
       const playPromise = backgroundAudio.play();
       if (playPromise && typeof playPromise.then === "function") {
-        playPromise
-          .then(() => {
-            setTimeout(() => {
-              if (!isUnlocked) {
-                backgroundAudio.muted = false;
-              }
-            }, 150);
-          })
-          .catch(() => {});
+        playPromise.catch(() => {});
       }
     };
-
-    attemptAudioPlay();
 
     const unlockAudio = () => {
+      if (isUnlocked) {
+        return;
+      }
       isUnlocked = true;
       backgroundAudio.muted = false;
+      backgroundAudio.removeAttribute("muted");
       backgroundAudio.volume = 1;
-      if (backgroundAudio.paused) {
-        backgroundAudio.play().catch(() => {});
-      }
     };
 
-    window.addEventListener("pointerdown", unlockAudio, { once: true });
-    window.addEventListener("keydown", unlockAudio, { once: true });
+    if (audioToggleButton) {
+      audioToggleButton.addEventListener("click", () => {
+        unlockAudio();
+        if (backgroundAudio.paused) {
+          backgroundAudio.play().catch(() => {});
+        } else {
+          backgroundAudio.pause();
+        }
+        setButtonState();
+      });
+      setButtonState();
+    }
+
+    window.addEventListener(
+      "pointerdown",
+      () => {
+        unlockAudio();
+        attemptAudioPlay();
+        setButtonState();
+      },
+      { once: true }
+    );
+
+    window.addEventListener(
+      "keydown",
+      () => {
+        unlockAudio();
+        attemptAudioPlay();
+        setButtonState();
+      },
+      { once: true }
+    );
 
     document.addEventListener("visibilitychange", () => {
       if (!document.hidden && backgroundAudio.paused) {
         attemptAudioPlay();
       }
     });
+
+    backgroundAudio.addEventListener("play", setButtonState);
+    backgroundAudio.addEventListener("pause", setButtonState);
+
+    attemptAudioPlay();
+    setButtonState();
   }
 })();
+
 
 
 
