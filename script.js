@@ -179,4 +179,35 @@
     heroCard.addEventListener("pointerenter", handleTilt);
     heroCard.addEventListener("pointerleave", resetTilt);
   }
+
+  const backgroundAudio = document.getElementById("background-audio");
+  if (backgroundAudio) {
+    const attemptAudioPlay = () => {
+      const playPromise = backgroundAudio.play();
+      if (playPromise && typeof playPromise.then === "function") {
+        playPromise.catch(() => {});
+      }
+    };
+
+    attemptAudioPlay();
+
+    const unlockAudio = () => {
+      attemptAudioPlay();
+      if (!backgroundAudio.paused) {
+        window.removeEventListener("pointerdown", unlockAudio);
+        window.removeEventListener("keydown", unlockAudio);
+      }
+    };
+
+    window.addEventListener("pointerdown", unlockAudio);
+    window.addEventListener("keydown", unlockAudio);
+
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden && backgroundAudio.paused) {
+        attemptAudioPlay();
+      }
+    });
+  }
 })();
+
+
