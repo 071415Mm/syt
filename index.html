@@ -3,43 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="一个以开源灵感打造的个人酷炫名片式网站。" />
-  <title>我的超炫个人主页</title>
+  <meta name="description" content="一个为两位创作者准备的沉浸式个人网站入口。" />
+  <title>选择你的英雄</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20250925" />
+  <link rel="stylesheet" href="styles.css?v=20251005" />
 </head>
 <body>
   <audio id="background-audio" src="assets/bg-audio.mp3" autoplay loop preload="auto" playsinline muted aria-hidden="true"></audio>
-  <button type="button" class="audio-toggle" data-audio-toggle aria-pressed="false">播放背景音乐</button>
+  <button type="button" class="audio-toggle" data-audio-toggle aria-pressed="false">开启背景音乐</button>
   <canvas id="hero-canvas" aria-hidden="true"></canvas>
   <div class="film-grain" aria-hidden="true"></div>
-  <main class="hero" role="main">
-    <article class="hero__card" aria-label="个人介绍">
-      <div class="hero__media" role="img" aria-label="替换成你的照片或作品">
-        <img src="assets/syt.jpg" alt="请替换成你的专属图片" />
+  <section class="hero-selector" data-hero-selector role="dialog" aria-modal="true" aria-label="英雄选择界面">
+    <div class="hero-selector__inner">
+      <p class="hero-selector__title">请选择你的英雄</p>
+      <div class="hero-selector__grid" role="list">
+        <button type="button" class="hero-selector__option" data-hero-option="syt" role="listitem" aria-label="进入 SYT 的世界">
+          <span class="hero-selector__avatar">
+            <img src="assets/syt.jpg" alt="SYT 的照片" loading="lazy" />
+          </span>
+          <span class="hero-selector__name">SYT</span>
+        </button>
+        <button type="button" class="hero-selector__option" data-hero-option="ws" role="listitem" aria-label="进入 WS 的世界">
+          <span class="hero-selector__avatar">
+            <img src="assets/ws.jpg" alt="WS 的照片" loading="lazy" />
+          </span>
+          <span class="hero-selector__name">WS</span>
+        </button>
+      </div>
+    </div>
+  </section>
+  <main class="hero hero--page" data-hero-stage>
+    <article class="hero__card" data-hero-card aria-label="个人名片">
+      <div class="hero__media" role="img" aria-label="肖像">
+        <img src="" alt="" loading="eager" data-hero-img />
       </div>
       <div class="hero__copy">
-        <h1>SYT</h1>
-        <p>
-          吉隆坡的天气总是翻云又覆雨
-        </p>
-        <p class="hero__subline">
-           Malaysia
-        </p>
+        <h1 data-hero-name></h1>
+        <p data-hero-desc></p>
+        <p class="hero__subline" data-hero-location></p>
       </div>
     </article>
     <div class="hero__hint" aria-hidden="true">
-      <span>SCROLL</span>
       <span class="hero__hint-line"></span>
     </div>
   </main>
-  <script src="script.js?v=20250925" defer></script>
+  <script src="script.js?v=20251005" defer></script>
 </body>
 </html>
-
-
-
-
 
